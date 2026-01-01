@@ -28,7 +28,7 @@ OWASP Top 10의 8번째 버전에 오신 것을 환영합니다!
 
 2025년 Top 10의 변화로는 두 개의 신규 카테고리와 하나의 카테고리가 통합되었다. 저희는 가능한 한 증상보다는 근본 원인에 초점을 두었다. 소프트웨어 엔지니어링과 소프트웨어 보안의 복잡성을 고려할 때, 어느 정도 중복이 없는 10개의 카테고리를 만드는 것은 사실상 불가능했다.
 
-![Mapping](../assets/2025-mappings.png)
+![Mapping](../ko/assets/2025-mappings-ko.jpeg)
 # OWASP Top 10 2025
 
 **[A01:2025 - Broken Access Control](A01_2025-Broken_Access_Control.md)**은 가장 심각한 애플리케이션 보안 위험으로 1위를 유지하였다. 제공된 데이터에 따르면 테스트된 애플리케이션의 평균 3.73%가 이 카테고리에 해당하는 40개 CWE(Common Weakness Enumeration) 중 하나 이상을 가지고 있었다. 위 그림의 점선으로 표시된 바와 같이, Server-Side Request Forgery(SSRF)가 이 카테고리에 통합되었다. 
