@@ -1,39 +1,38 @@
-# Next Steps
+# 다음 단계
 
-By design, the OWASP Top 10 is innately limited to the ten most significant risks. Every OWASP Top 10 has “on the cusp” risks considered at length for inclusion, but in the end, didn't make the cut. The other risks were more prevalent and impactful.
+OWASP Top 10은 이름 그대로 가장 중요한 10가지 위험으로만 선정한다. 각 버전의 OWASP Top 10에는 포함 여부를 두고 충분히 검토되었으나, 다른 위험들이 더 빈번하게 발생하고 영향도도 더 컸기 때문에 최종 목록에 포함되지 않은 "경계선상(on the cusp)" 위험들이 존재한다.
 
-The following two issues are well worth the effort to identify and remediate, organizations working towards a mature appsec program, security consultancies, or tool vendors wishing to expand coverage for their offerings.
-
-
-## X01:2025 Lack of Application Resilience
-
-### Background. 
-
-This is a renaming of 2021’s Denial of Service. That was renamed as it described a symptom rather than a root cause. This category focuses on CWEs that describe weaknesses that are related to resilience issues. The scoring of this category was very close with A10:2025-Mishandling of Exceptional Conditions. Relevant CWEs include: *CWE-400 Uncontrolled Resource Consumption, CWE-409 Improper Handling of Highly Compressed Data (Data Amplification), CWE-674 Uncontrolled Recursion*, and *CWE-835 Loop with Unreachable Exit Condition ('Infinite Loop').*
+아래의 세 가지 이슈는 발견 및 조치에 투자할 만한 가치가 크며, 성숙한 애플리케이션 보안 프로그램을 목표로 하는 조직, 보안 자문 회사, 또는 제품의 커버리지를 확장하려는 보안 도구 벤더에 특히 유용하게 사용될 수 있다.
 
 
-### Score table.
+## X01:2025 애플리케이션 복원력 부족
+
+### 배경. 
+
+이 카테고리는 2021년의 서비스 거부(Denial of Service)를 재명명한 것이다. 기존 명칭은 근본 원인보다는 발생 현상을 설명하는 성격이 강해, 이를 보완하기 위해 재명명되었다. 이 카테고리는 복원력과 관련된 약점을 설명하는 CWE에 초점을 둔다. 점수 산정은 A10:2025-잘못된 예외 처리와 매우 근접했다. 관련된 CWE로는 *CWE-400 통제되지 않은 자원 소비, CWE-409 고압축 데이터의 부적절한 처리(데이터 증폭), CWE-674 통제되지 않은 재귀*, 그리고 *CWE-835 종료 조건에 도달할 수 없는 루프(무한루프).*가 있다.
+
+### 점수표.
 
 
 <table>
   <tr>
-   <td>CWEs Mapped 
+   <td>해당되는 CWE 개수
    </td>
-   <td>Max Incidence Rate
+   <td>최대 취약점 발생률
    </td>
-   <td>Avg Incidence Rate
+   <td>평균 취약점 발생률
    </td>
-   <td>Max Coverage
+   <td>최대 테스트 커버리지
    </td>
-   <td>Avg Coverage
+   <td>평균 테스트 커버리지
    </td>
-   <td>Avg Weighted Exploit
+   <td>평균 가중 악용도
    </td>
-   <td>Avg Weighted Impact
+   <td>평균 가중 영향도
    </td>
-   <td>Total Occurrences
+   <td>총 발생 건수
    </td>
-   <td>Total CVEs
+   <td>총 CVE 건수
    </td>
   </tr>
   <tr>
@@ -60,44 +59,45 @@ This is a renaming of 2021’s Denial of Service. That was renamed as it describ
 
 
 
-### Description. 
+### 설명. 
 
-This category represents a systemic weakness in how applications respond to stress, failures, and edge cases that it is unable to recover from failure. When an application does not gracefully handle, withstand, or recover from unexpected conditions, resource constraints, and other adverse events it can easily result in availability issues (most commonly), but also data corruption, sensitive data disclosure, cascading failures, and/or bypasses of security controls.
+이 카테고리는 애플리케이션이 스트레스, 장애 및 예외 케이스에 대응하는 방식 전반에 존재하는 시스템적 약점을 의미하며, 그 결과 장애 상황에서 애플리케이션이 정상 상태로 복구하지 못할 수 있다. 애플리케이션이 예기치 않은 조건, 리소스 제약 및 기타 불리한 이벤트를 원활하게(gracefully) 처리하지 못하거나, 견디지 못하거나, 또는 복구하지 못할 경우, 가용성 문제(일반적으로)로 이어지며, 그 외에도 데이터 손상, 민감 데이터 노출, 연쇄 장애, 및/또는 보안 통제 우회를 유발할 수 있다.
 
-Furthermore [X02:2025 Memory Management Failures](#x022025-memory-management-failures) can also lead to failure of the application or even the entire system.
+또한 [X02:2025 메모리 관리 실패](#x022025-memory-management-failures) 역시 애플리케이션, 또는 심지어 전체 시스템의 장애로 이어질 수 있다.
 
-### How to prevent 
+### 대응방안. 
 
-In order to prevent this type of vulnerability you must design for failure and recovery of your systems.
+이 유형의 취약점을 예방하기 위해서는 시스템의 장애와 복구를 기본 전제로 설계해야 한다.
 
-* Add limits, quotas, and failover functionality, paying special attention to the most resource consuming operations
-* Identify resource intensive pages and plan ahead: Reduce attack surface especially not exposing unneeded ‘gadgets’ and functions that require a lot of resources (e.g. CPU, memory) to unknown or untrusted users
-* Perform strict input validation with allow-lists and size limitations, then test thoroughly
-* Limit response sizes, and never send raw responses back to the client (process on the server side)
-* Default to safe/closed (never open), deny by default and roll back if there’s an error
-* Avoid blocking synchronous calls in request threads (use asynchronous/non-blocking, have timeouts, have concurrency limits, etc.)
-* Carefully test your error handling functionality
-* Implement resilience patterns such as circuit breakers, bulkheads, retry logic, and graceful degradation
-* Do performance and load testing; add chaos engineering if you have the risk appetite for it
-* Implement and architect for redundancy where reasonable and affordable
-* Implement monitoring, observability, and alerting
-* Filter invalid sender addresses in accordance with RFC 2267
-* Block known botnets by finger prints, IPs, or dynamically by behavior
-* Proof-of-Work: initiate resource consuming operations at the *attackers* side that does not have big impacts on normal users but impacts bots trying to send a huge amount of requests. Make the Proof-of-Work more difficult if the general load of the system raises, especially for systems that are less trustworthy or appear to be bots
-* Limit server side session time based on inactivity and a final timeout
-* Limit session bound information storage
-
-
-### Example attack scenarios. 
-
-**Scenario #1:** Attackers intentionally consume application resources to trigger failures within the system, resulting in denial of service. This could be memory exhaustion, filling up disk space, CPU saturation, or opening endless connections.
-
-**Scenario #2:** Input fuzzing that leads to crafted responses that break application business logic.
-
-**Scenario #3:** Attackers focus on the application’s dependencies, taking down APIs or other external services, and the application is unable to continue.
+* 제한, 할당량 및 장애 극복 기능(failover) 기능을 추가하되, 특히 자원을 가장 많이 소모하는 작업에 주의를 기울인다.
+* 자원 소모가 큰 페이지를 식별하고 사전에 대비하라: 공격 표면을 줄이되, 특히 불명의 또는 신뢰할 수 없는 사용자에게 불필요한 '가젯(gadgets)'과 많은 자원(예: CPU, 메모리)을 요구하는 기능을 노출하지 않도록 한다.
+* 입력값은 크기 제한을 적용하고 허용 리스트 기반으로 엄격히 검증한뒤, 철저히 테스트한다.
+* 응답 크기를 제한하고, 가공되지 않은(raw) 응답을 클라이언트에 그대로 반환하지 않는다(서버 측에서 우선 처리한다).
+* 기본값으로 안전/차단(절대로 오픈을 사용하지 않는다)로 설정하고, 우선적으로 차단(deny by default)하며, 오류가 발생하면 롤백한다.
+* 리퀘스트 스레드에서 동기식 차단 호출(blocking synchronous call)을 피한다(비동기/논블로킹 사용, 타임아웃 설정, 동시성 제한 등).
+* 에러 처리 기능을 신중하게 테스트한다.
+* 서킷 브레이커, 격벽(bulkhead), 다시 시도(retry logic), 우아한 성능 저하(graceful degradation)와 같은 복원력 패턴을 구현한다.
+* 성능 및 부하 테스트를 수행한다. 조직의 위험 수용 범위 내에서 카오스 엔지니어링을 도입한다.
+* 합리적이고 비용적으로 감당 가능한 범위에서 이중화(redundancy)을 구현하고, 이를 전제로 아키텍처를 설계한다.
+* 모니터링, 옵저버빌리티, 알림을 구현한다.
+* RFC 2267을 준수해 잘못된 발신자 주소를 필터링한다.
+* 핑거프린트, IP 또는 행위 기반 동적 탐지로 알려진 봇넷을 차단한다.
+* 작업 증명(Proof-of-Work): 정상 사용자에게는 큰 영향이 없으면서 대량 요청을 보내려는 봇에는 영향을 주도록, 자원 소모 작업을 *공격자* 측에서 수행하도록 시작한다. 시스템의 전체 부하가 증가하면 특히 신뢰도가 낮거나 봇으로 보이는 시스템에 대해 작업증명 난이도를 높인다.
+* 작업 증명(Proof-of-Work) 적용. 자격 증명을 적용하여 자원 소모 작업을 서버가 아니라 *공격자* 측에 부과한다. 정상 사용자 경험에 미치는 영향은 최소화하고, 시스템 부하가 상승할수록 자격증명 난이도를 노이고, 특히 신뢰도가 낮거나 봇으로 판단되는 트래픽에는 더 높은 난이도를 적용한다.
+* 비활성 시간과 최종 타임아웃을 기준으로 서버 측 세션 시간을 제한한다.
+* 세션에 저장되는 상태 정보는 최소화한다.
 
 
-### References.
+### 공격 시나리오 예시.  
+
+**시나리오 1:** 공격자가 리소스 소모를 유도해 시스템 장애를 유발하고, 결과적으로 서비스 거부(DoS) 상태를 만든다. 예로 메모리 고갈, 디스크 용량 소진, CPU 사용량 포화, 커넥션 무제한 연결 등이 있다.
+
+**시나리오 2:** 입력값 퍼징을 통해 비정상 입력을 대량 주입하고, 그 결과 비즈니스 로직을 오동작시키는 형태의 응답이 유도되도록 만든다.
+
+**시나리오 3:** 공격자가 애플리케이션의 의존성을 공격하여 API 또는 기타 외부 서비스를 다운시키며, 애플리케이션이 동작할 수 없게 한다.
+
+
+### 참조.
 
 * [OWASP Cheat Sheet: Denial of Service](https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html)
 * [OWASP MASVS‑RESILIENCE](https://mas.owasp.org/MASVS/11-MASVS-RESILIENCE/)
@@ -107,7 +107,8 @@ In order to prevent this type of vulnerability you must design for failure and r
 * [NIST Cybersecurity Framework (CSF)](https://www.nist.gov/cyberframework)
 * [Avoid Blocking Calls: Go Async in Java (Devlane)](https://www.devlane.com/blog/avoid-blocking-calls-go-async-in-java)
 
-### List of Mapped CWEs
+### 해당되는 CWE 목록.
+
 * [CWE-73  External Control of File Name or Path](https://cwe.mitre.org/data/definitions/73.html)
 * [CWE-183 Permissive List of Allowed Inputs](https://cwe.mitre.org/data/definitions/183.html)
 * [CWE-256 Plaintext Storage of a Password](https://cwe.mitre.org/data/definitions/256.html)
@@ -151,33 +152,33 @@ In order to prevent this type of vulnerability you must design for failure and r
 
 ## X02:2025 Memory Management Failures
 
-### Background. 
+### 배경. 
 
 Languagess like Java, C#, JavaScript/TypeScript (node.js), Go, and "safe" Rust are memory safe. Memory management problems tend to happen in non-memory safe languages such as C and C++. This category scored the lowest on the community survey and low in the data despite having the third most related CVEs. We believe this is due to the predominance of web applications over more traditional desktop applications. Memory management vulnerabilities frequently have the highest CVSS scores. 
 
 
-### Score table.
+### 점수표.
 
 
 <table>
   <tr>
-   <td>CWEs Mapped 
+   <td>해당되는 CWE 개수
    </td>
-   <td>Max Incidence Rate
+   <td>최대 취약점 발생률
    </td>
-   <td>Avg Incidence Rate
+   <td>평균 취약점 발생률
    </td>
-   <td>Max Coverage
+   <td>최대 테스트 커버리지
    </td>
-   <td>Avg Coverage
+   <td>평균 테스트 커버리지
    </td>
-   <td>Avg Weighted Exploit
+   <td>평균 가중 악용도
    </td>
-   <td>Avg Weighted Impact
+   <td>평균 가중 영향도
    </td>
-   <td>Total Occurrences
+   <td>총 발생 건수
    </td>
-   <td>Total CVEs
+   <td>총 CVE 건수
    </td>
   </tr>
   <tr>
@@ -204,7 +205,7 @@ Languagess like Java, C#, JavaScript/TypeScript (node.js), Go, and "safe" Rust a
 
 
 
-### Description. 
+### 설명. 
 
 When an application is forced to manage memory itself, it is very easy to make mistakes. Memory safe languages are being used more often, but there are still many legacy systems in production worldwide, new low-level systems that require the use of non-memory safe languages, and web applications that interact with mainframes, IoT devices, firmware, and other systems that may be forced to manage their own memory. Representative CWEs are *CWE-120 Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')* and *CWE-121 Stack-based Buffer Overflow*.
 
@@ -222,7 +223,7 @@ Memory management failures can happen when:
 Memory management failures can lead to failure of the application or even the entire system, see also [X01:2025 Lack of Application Resilience](#x012025-lack-of-application-resilience)
 
 
-### How to prevent. 
+### 대응 방안. 
 
 The best way to prevent memory management failures is to use a memory-safe language. Examples include Rust, Java, Go, C#, Python, Swift, Kotlin, JavaScript, etc. When creating new applications, try hard to convince your organization that it is worth the learning curve to switch to a memory-safe language. If performing a full refactor, push for a rewrite in a memory-safe language when it is possible and feasible.
 
@@ -244,7 +245,7 @@ If you are unable to use a memory-safe language, perform the following:
 * Monitor your underlying infrastructure specifically for potential memory vulnerabilities and other failures.
 * Consider using [canaries](https://en.wikipedia.org/wiki/Buffer_overflow_protection#Canaries) to protect your address stack from overflow attacks.
 
-### Example attack scenarios. 
+### 공격 시나리오 예시. 
 
 **Scenario #1:** Buffer overflows are the most famous memory vulnerability, a situation where an attacker submits more information into a field than it can accept, such that it overflows the buffer created for the underlying variable. In a successful attack, the overflow characters overwrite the stack pointer, allowing the attacker to insert malicious instructions into your program.
 
@@ -254,14 +255,14 @@ If you are unable to use a memory-safe language, perform the following:
 
 Note: modern browsers use many levels of defenses to defend against such attacks, including [browser sandboxing](https://www.geeksforgeeks.org/ethical-hacking/what-is-browser-sandboxing/#types-of-browser-sandboxing) ASLR, DEP/NX, RELRO, and PIE. A memory management failure attack on a browser is not a simple attack to carry out.
 
-### References.
+### 참조.
 
 * [OWASP community pages: Memory leak,](https://owasp.org/www-community/vulnerabilities/Memory_leak) [Doubly freeing memory,](https://owasp.org/www-community/vulnerabilities/Doubly_freeing_memory) [& Buffer Overflow](https://owasp.org/www-community/vulnerabilities/Buffer_Overflow)
 * [Awesome Fuzzing: a list of fuzzing resources](https://github.com/secfigo/Awesome-Fuzzing) 
 * [Project Zero Blog](https://googleprojectzero.blogspot.com)
 * [Microsoft MSRC Blog](https://www.microsoft.com/en-us/msrc/blog)
 
-### List of Mapped CWEs
+### 해당되는 CWE 목록.
 * [CWE-14 Compiler Removal of Code to Clear Buffers](https://cwe.mitre.org/data/definitions/14.html)
 * [CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer](https://cwe.mitre.org/data/definitions/119.html)
 * [CWE-120 Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')](https://cwe.mitre.org/data/definitions/120.html)
@@ -287,17 +288,17 @@ Note: modern browsers use many levels of defenses to defend against such attacks
 
 ## X03:2025 Inappropriate Trust in AI Generated Code ('Vibe Coding')
 
-### Background.
+### 배경.
 
 Currently the entire world is talking about and using AI, and this includes software developers. Although there are currently no CVEs or CWEs related to AI generated code, it is well known and documented that AI generated code often contains more vulnerabilities than code written by human beings.
 
 
-### Description.
+### 설명.
 
 We are seeing software development practices change to include not only code written with the assistance of AI, but code written and committed almost entirely without human oversight (often referred to as vibe coding). Just as it was never a good idea to copy code snippets from blogs or websites without thinking twice, the problem is exacerbated in this case. Good, secure code snippets were and are rare and might be statistically neglected by AI due to system constraints.
 
 
-### How to prevent.
+### 대응 방안.
 We urge all people who write code to consider the following when using AI:
 
 * You should be able to read and fully understand all code you submit, even if it is written by an AI or copied from an online forum. You are responsible for all code that you commit.
@@ -315,10 +316,10 @@ We urge all people who write code to consider the following when using AI:
 * Train your developers on your policies, as well as safe AI usage and best practices for using AI in software development.
 
 
-### References.
+### 참조.
 
 * [OWASP Cheat Sheet: Secure Code Review](https://cheatsheetseries.owasp.org/cheatsheets/Secure_Code_Review_Cheat_Sheet.html)
 
 
-### List of Mapped CWEs
+###  해당되는 CWE 목록.
 -none-
