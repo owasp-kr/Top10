@@ -9,7 +9,7 @@ OWASP Top 10은 이름 그대로 가장 중요한 10가지 위험으로만 선�
 
 ### 배경. 
 
-이 카테고리는 2021년의 서비스 거부(Denial of Service)를 재명명한 것이다. 기존 명칭은 근본 원인보다는 발생 현상을 설명하는 성격이 강해, 이를 보완하기 위해 재명명되었다. 이 카테고리는 복원력과 관련된 약점을 설명하는 CWE에 초점을 둔다. 점수 산정은 A10:2025-잘못된 예외 처리와 매우 근접했다. 관련된 CWE로는 *CWE-400 통제되지 않은 자원 소비, CWE-409 고압축 데이터의 부적절한 처리(데이터 증폭), CWE-674 통제되지 않은 재귀*, 그리고 *CWE-835 종료 조건에 도달할 수 없는 루프(무한루프).*가 있다.
+이 카테고리는 2021년의 서비스 거부(Denial of Service)를 재명명한 것이다. 기존 명칭은 근본 원인보다는 발생 현상을 설명하는 성격이 강해, 이를 보완하기 위해 재명명되었다. 이 카테고리는 복원력과 관련된 약점을 설명하는 CWE에 초점을 둔다. 점수 산정은 A10:2025-부적절한 예외 처리와 매우 근접했다. 관련된 CWE로는 *CWE-400 통제되지 않은 자원 소비, CWE-409 고압축 데이터의 부적절한 처리(데이터 증폭), CWE-674 통제되지 않은 재귀*, 그리고 *CWE-835 종료 조건에 도달할 수 없는 루프(무한루프).*가 있다.
 
 ### 점수표.
 
@@ -150,11 +150,11 @@ OWASP Top 10은 이름 그대로 가장 중요한 10가지 위험으로만 선�
 * [CWE-1125 Excessive Attack Surface](https://cwe.mitre.org/data/definitions/1125.html)
 
 
-## X02:2025 Memory Management Failures
+## X02:2025 메모리 관리 실패
 
 ### 배경. 
 
-Languagess like Java, C#, JavaScript/TypeScript (node.js), Go, and "safe" Rust are memory safe. Memory management problems tend to happen in non-memory safe languages such as C and C++. This category scored the lowest on the community survey and low in the data despite having the third most related CVEs. We believe this is due to the predominance of web applications over more traditional desktop applications. Memory management vulnerabilities frequently have the highest CVSS scores. 
+Java, C#, JavaScript/TypeScript(node.js), Go, 그리고 "안전" Rust와 같은 언어는 메모리 안전이다. 메모리 관리 문제는 C 및 C++와 같은 비메모리 안전 언어에서 발생하는 경향이 있다. 이 카테고리는 관련 CVE가 세 번째로 많음에도 불구하고, 커뮤니티 설문에서는 가장 낮은 점수를 받았고 데이터 상에서도 낮게 나타났다. 이는 전통적인 데스크톱 애플리케이션보다 웹 애플리케이션이 우세하기 때문이라고 본다. 메모리 관리 취약점은 주로 가장 높은 CVSS 점수를 가진다.
 
 
 ### 점수표.
@@ -207,20 +207,20 @@ Languagess like Java, C#, JavaScript/TypeScript (node.js), Go, and "safe" Rust a
 
 ### 설명. 
 
-When an application is forced to manage memory itself, it is very easy to make mistakes. Memory safe languages are being used more often, but there are still many legacy systems in production worldwide, new low-level systems that require the use of non-memory safe languages, and web applications that interact with mainframes, IoT devices, firmware, and other systems that may be forced to manage their own memory. Representative CWEs are *CWE-120 Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')* and *CWE-121 Stack-based Buffer Overflow*.
+애플리케이션이 메모리를 직접 관리해야 할 때, 실수를 하기 매우 쉽다. 메모리 안전 언어가 더 많이 사용되고 있지만, 전 세계 운영 환경에는 여전히 많은 레거시 시스템이 존재하며, 비메모리 안전 언어의 사용이 필요한 새로운 저수준 시스템과 메인프레임, IoT 장치, 펌웨어 및 자체 메모리를 관리해야 할 수 있는 기타 시스템과 상호작용하는 웹 애플리케이션도 여전히 많다. 대표적인 CWE로는 *CWE-120 입력 크기 확인 없이 버퍼 복사(‘클래식 버퍼 오버플로’)* 및 *CWE-121 스택 기반 버퍼 오버플로*가 있다.
 
-Memory management failures can happen when:
+메모리 관리 실패는 다음과 같은 경우에 발생할 수 있다.
 
-* You do not allocate enough memory for a variable
-* You do not validate input, causing an overflow of the heap, the stack, a buffer
-* You store a data value that is larger than the type of the variable can hold 
-* You attempt to use unallocated memory or address spaces
-* You create off-by-one errors (counting from 1 instead of zero)
-* You try to access an object after its been freed
-* You use uninitialized variables
-* You leak memory or otherwise use up all available memory in error until our application fails
+* 변수에 대해 충분한 메모리를 할당하지 않는 경우.
+* 입력을 검증하지 않아 힙, 스택 또는 버퍼에서 오버플로가 발생하는 경우.
+* 변수 타입이 수용할 수 있는 크기보다 큰 데이터 값을 저장하는 경우.
+* 할당되지 않은 메모리 또는 주소 공간을 사용하려고 시도하는 경우.
+* 오프 바이 원(off-by-one, 0이 아니라 1부터 카운팅) 오류가 있는 경우.
+* 해제(free)된 이후에 객체에 접근하려고 하는 경우.
+* 초기화되지 않은 변수를 사용하는 경우.
+* 메모리 누수 또는 비정상 메모리 소모로 가용 메모리가 고갈되어 장애로 이어지는 경우.
 
-Memory management failures can lead to failure of the application or even the entire system, see also [X01:2025 Lack of Application Resilience](#x012025-lack-of-application-resilience)
+메모리 관리 실패는 애플리케이션, 또는 심지어 전체 시스템의 장애로 이어질 수 있으며, 이는 [X01:2025 Lack of Application Resilience](#x012025-lack-of-application-resilience)를 함께 참고하라.
 
 
 ### 대응 방안. 
