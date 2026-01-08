@@ -123,7 +123,7 @@
 * [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/01-introduction/05-introduction)
 
 
-## 해당되는 CWE 목록
+## 해당 CWE 목록
 
 * [CWE-258 Empty Password in Configuration File](https://cwe.mitre.org/data/definitions/258.html)
 
