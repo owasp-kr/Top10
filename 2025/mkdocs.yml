@@ -98,7 +98,7 @@ plugins:
 extra:
   alternate:                                                         # see https://squidfunk.github.io/mkdocs-material/setup/changing-the-language/#site-language-selector
     - name: en - English
-      link: ./
+      link: ./en/
       lang: en
     - name: ko - 한국어
       link: ./ko/
